@@ -265,33 +265,33 @@ class PublicClient(object):
 
         """
         url = self.url + endpoint
-		num_retries = 0
+        num_retries = 0
 
-		def do_request():
-			r = self.session.request(method, url, params=params, data=data,
-									 auth=self.auth, timeout=30)
-			return r
+        def do_request():
+            r = self.session.request(method, url, params=params, data=data,
+                                     auth=self.auth, timeout=30)
+            return r
 
-		while True:
-			try:
-				r = do_request()
+        while True:
+            try:
+                r = do_request()
 
-				if r.status_code == requests.code.ok:
-					return r.json()
+                if r.status_code == requests.code.ok:
+                    return r.json()
 
-				if num_retries == 0:
-					print(f'Return of status code {r.status_code}. Retrying {url} for max {max_retries} retries, timeout of {retry_timeout} seconds')
+                if num_retries == 0:
+                    print(f'Return of status code {r.status_code}. Retrying {url} for max {max_retries} retries, timeout of {retry_timeout} seconds')
 
-				num_retries += 1
+                num_retries += 1
 
 
-			except Exception as e:
-				if num_retries == 0:
-					print(f'Exception caught: {e}. Retrying {url} for max {max_retries} retries, timeout of {retry_timeout} seconds')
+            except Exception as e:
+                if num_retries == 0:
+                    print(f'Exception caught: {e}. Retrying {url} for max {max_retries} retries, timeout of {retry_timeout} seconds')
 
-				num_retries += 1
-				if num_retries >= max_retries:
-					raise
+                num_retries += 1
+                if num_retries >= max_retries:
+                    raise
 
     def _send_paginated_message(self, endpoint, params=None):
         """ Send API message that results in a paginated response.
